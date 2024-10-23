@@ -32,6 +32,8 @@ export class AuthService{
 
     const payload = { username: user.username, sub: user.id };
     return {
+      message: 'Login successful',
+      statusCode: 200,
       access_token: this.jwtService.sign(payload),
     };
 
