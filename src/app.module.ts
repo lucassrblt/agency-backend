@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './module/auth.module';
-import { AdModule } from './module/ad.module';
+import { AuthModule } from './auth/auth.module';
+import { AdModule } from './ads/ad.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [AuthModule, AdModule],
+  imports: [
+    AuthModule,
+    AdModule,
+    ConfigModule.forRoot(),
+  ],
   controllers: [],
   providers: [],
 })

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { AdService } from '../services/ad.service';
+import { AdService } from './ad.service';
 // import { Ad, AdRequest } from '../interface/Ad.interface';
 
 @Controller('ad')

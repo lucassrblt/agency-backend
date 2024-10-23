@@ -1,18 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { supabaseClient } from './supabase';
-import { AdDto } from '../entity/adDto';
-import { AdContent } from '../interface/Ad.interface';
+import { SupabaseService } from '../supabase/supabase.service';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 @Injectable()
 export class AdService {
+  private supabaseClient: SupabaseClient;
+
+  constructor(private supabaseService: SupabaseService) {
+    this.supabaseClient = this.supabaseService.getClient();
+  }
+
+
   async getAds(
-    type: number | null ,
-    squarefoot: number | null,
-    price: number | null,
-    city: string,
+    type?: number,
+    squarefoot?: number,
+    price?:  number,
+    city?: string,
   ): Promise<any> {
     try {
-      let query = supabaseClient.from('ads').select(`
+      let query = this.supabaseClient.from('ads').select(`
     *,
     images!ad_id (
       url,
@@ -37,7 +43,7 @@ export class AdService {
         query = query.lte('price', price);
       }
 
-      if (city !== '') {
+      if (city !== '' && city !== undefined) {
         console.log('city', city);
         query = query.eq('city', city);
       }
@@ -57,7 +63,7 @@ export class AdService {
 
   async getTechnicalSheet(adId: bigint): Promise<any> {
     try {
-      const { data, error } = await supabaseClient
+      const { data, error } = await this.supabaseClient
         .from('technicalSheet')
         .select('*')
         .eq('adId', adId);
@@ -75,7 +81,7 @@ export class AdService {
   async getImages(adId: bigint): Promise<any> {
     try {
       const images = [];
-      const { data, error } = await supabaseClient
+      const { data, error } = await this.supabaseClient
         .from('images')
         .select('url')
         .eq('ad_id', adId);
