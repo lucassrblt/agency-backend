@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
 import { SupabaseClient } from '@supabase/supabase-js';
 
+interface City {
+  "city": string
+}
+
 @Injectable()
 export class AdService {
   private supabaseClient: SupabaseClient;
@@ -12,9 +16,9 @@ export class AdService {
 
 
   async getAds(
-    type?: number,
-    squarefoot?: number,
-    price?:  number,
+    type?: string,
+    squarefoot?: string,
+    price?:  string,
     city?: string,
   ): Promise<any> {
     try {
@@ -30,17 +34,17 @@ export class AdService {
 
       if (type !== null && type !== undefined) {
         console.log('type', type);
-        query = query.eq('type', type);
+        query = query.eq('type', parseInt(type));
       }
 
       if (squarefoot !== null && squarefoot !== undefined) {
         console.log('squarefoot', squarefoot);
-        query = query.gte('squarefoot', squarefoot);
+        query = query.gte('squarefoot', parseInt(squarefoot));
       }
 
       if (price !== null && price !== undefined) {
         console.log('price', price);
-        query = query.lte('price', price);
+        query = query.lte('price', parseInt(price));
       }
 
       if (city !== '' && city !== undefined) {
@@ -54,7 +58,22 @@ export class AdService {
       if (error) {
         throw new Error(error.message);
       }
-      console.log('data', data);
+      return data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async getCities(): Promise<City[]> {
+    try {
+      const { data, error } = await this.supabaseClient
+        .from('distinct_cities')
+        .select('city');
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
       return data;
     } catch (e) {
       throw new Error(e.message);
@@ -78,25 +97,4 @@ export class AdService {
     }
   }
 
-  async getImages(adId: bigint): Promise<any> {
-    try {
-      const images = [];
-      const { data, error } = await this.supabaseClient
-        .from('images')
-        .select('url')
-        .eq('ad_id', adId);
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      data.map((image: any) => {
-        images.push(image.url);
-      });
-
-      return images;
-    } catch (e) {
-      throw new Error(e.message);
-    }
-  }
 }

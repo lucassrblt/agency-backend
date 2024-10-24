@@ -8,12 +8,17 @@ export class AdController {
 
   @Get()
   getAds(
-    @Query('type') type: number,
-    @Query('squarefoot') squarefoot: number,
-    @Query('price') price: number,
-    @Query('city') city: string,
+    @Query('type') type?: string,
+    @Query('squarefoot') squarefoot?: string,
+    @Query('price') price?: string,
+    @Query('city') city?: string,
   ): any {
     return this.adService.getAds(type, squarefoot, price, city);
+  }
+
+  @Get('/cities')
+  getCities(): any {
+    return this.adService.getCities();
   }
 
   // @Post()
