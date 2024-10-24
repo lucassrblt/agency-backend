@@ -14,6 +14,12 @@ export interface AdContent {
   squarefoot: number;
 }
 
+
+export interface AdRequest {
+  id: number,
+  title: string,
+}
+
 export interface AdImages {
   id: bigint;
   adId: bigint;

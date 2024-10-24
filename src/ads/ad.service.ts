@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
 import { SupabaseClient } from '@supabase/supabase-js';
+import { AdRequest } from '../interface/Ad.interface';
 
 interface City {
   "city": string
@@ -60,6 +61,40 @@ export class AdService {
       }
       return data;
     } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async deleteAd(adRequest: AdRequest){
+    try {
+      const { id } = adRequest
+
+      await this.deleteImage(id);
+      const { data, error } = await this.supabaseClient.from('ads').delete().eq('id', id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return data;
+    }
+    catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+
+  async deleteImage(adId: number){
+    try {
+      const {data, error } = await this.supabaseClient.from('images').delete().eq('ad_id', adId);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return data;
+
+    }catch (e) {
       throw new Error(e.message);
     }
   }

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AdService } from './ad.service';
-// import { Ad, AdRequest } from '../interface/Ad.interface';
+import { AdRequest } from '../interface/Ad.interface';
 
 @Controller('ad')
 export class AdController {
@@ -14,6 +14,11 @@ export class AdController {
     @Query('city') city?: string,
   ): any {
     return this.adService.getAds(type, squarefoot, price, city);
+  }
+
+  @Post()
+  deleteAd(@Body() adRequest): any {
+    return this.adService.deleteAd(adRequest);
   }
 
   @Get('/cities')
