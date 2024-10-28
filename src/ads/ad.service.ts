@@ -4,7 +4,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { AdRequest } from '../interface/Ad.interface';
 
 interface City {
-  "city": string
+  city: string;
 }
 
 @Injectable()
@@ -15,11 +15,10 @@ export class AdService {
     this.supabaseClient = this.supabaseService.getClient();
   }
 
-
   async getAds(
     type?: string,
     squarefoot?: string,
-    price?:  string,
+    price?: string,
     city?: string,
   ): Promise<any> {
     try {
@@ -30,9 +29,6 @@ export class AdService {
       id
     )
   `);
-;
-
-
       if (type !== null && type !== undefined) {
         console.log('type', type);
         query = query.eq('type', parseInt(type));
@@ -55,7 +51,6 @@ export class AdService {
 
       let { data, error } = await query;
 
-
       if (error) {
         throw new Error(error.message);
       }
@@ -65,36 +60,91 @@ export class AdService {
     }
   }
 
-  async deleteAd(adRequest: AdRequest){
+  async createAd(adRequest: any) {
     try {
-      const { id } = adRequest
+      const { images, ...adContent } = adRequest;
+      console.log('adContent', adContent);
+      const { data, error } = await this.supabaseClient
+        .from('ads')
+        .insert(adContent)
+        .select();
 
-      await this.deleteImage(id);
-      const { data, error } = await this.supabaseClient.from('ads').delete().eq('id', id);
+      const idCreated = data[0].id;
 
       if (error) {
+        console.log(error);
         throw new Error(error.message);
       }
 
+      this.insertImages(images, idCreated);
+
       return data;
-    }
-    catch (e) {
+    } catch (e) {
       throw new Error(e.message);
     }
   }
 
-
-  async deleteImage(adId: number){
+  async deleteAd(adRequest: AdRequest) {
     try {
-      const {data, error } = await this.supabaseClient.from('images').delete().eq('ad_id', adId);
+      const { id } = adRequest;
+
+      await this.deleteImage(id);
+      const { data, error } = await this.supabaseClient
+        .from('ads')
+        .delete()
+        .eq('id', id);
+
 
       if (error) {
         throw new Error(error.message);
       }
 
       return data;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
 
-    }catch (e) {
+  async insertImages(images, id) {
+    try {
+      const imagesSet = [];
+
+      images.map((image) => {
+        imagesSet.push({
+          ad_id: id,
+          url: image,
+        });
+      });
+
+      console.log('imagesSet', imagesSet)
+
+      const { data, error } = await this.supabaseClient
+        .from('images')
+        .insert(imagesSet);
+
+      console.log('error', error)
+
+      if (error) {
+        throw new Error(error.message);
+      }
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async deleteImage(adId: number) {
+    try {
+      const { data, error } = await this.supabaseClient
+        .from('images')
+        .delete()
+        .eq('ad_id', adId);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return data;
+    } catch (e) {
       throw new Error(e.message);
     }
   }
@@ -131,5 +181,4 @@ export class AdService {
       throw new Error(e.message);
     }
   }
-
 }

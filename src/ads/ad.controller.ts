@@ -17,6 +17,11 @@ export class AdController {
   }
 
   @Post()
+  createAd(@Body() adRequest): any{
+    return this.adService.createAd(adRequest)
+  }
+
+  @Post("/delete")
   deleteAd(@Body() adRequest): any {
     return this.adService.deleteAd(adRequest);
   }
