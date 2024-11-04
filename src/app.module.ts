@@ -1,12 +1,23 @@
+// import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
-import { AdModule } from './ads/ad.module';
+import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
-
+import { UserModule } from './modules/user/user.module';
+import { AdModule } from './modules/ad/ad.module';
 @Module({
   imports: [
-    AuthModule,
-    AdModule,
+    SequelizeModule.forRoot({
+      autoLoadModels: true, // Automatically load models
+      synchronize: true, // Synchronize models with the database - Not for production
+      sync: { alter: true }, // Alter tables to fit models - Not for production
+      dialect: 'mariadb', // Specify our database type
+      host: 'localhost', // Database host
+      port: 3308, // Database port
+      username: 'root', // Database username
+      password: 'root', // Database password
+      database: 'agency', // Database name
+    }),
+    UserModule,
     ConfigModule.forRoot(),
   ],
   controllers: [],

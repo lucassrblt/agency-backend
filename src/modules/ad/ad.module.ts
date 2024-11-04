@@ -1,14 +1,13 @@
+import { SequelizeModule } from '@nestjs/sequelize';
 import { Module } from '@nestjs/common';
 import { AdController } from './ad.controller';
 import { AdService } from './ad.service';
-import { SupabaseService } from '../supabase/supabase.service';
-import { ConfigModule } from '@nestjs/config';
+import { Ad } from './ad.entity';
 
 @Module({
-  imports: [ConfigModule],
   controllers: [AdController],
-  providers: [AdService, SupabaseService],
-  exports: [],
+  imports: [SequelizeModule.forFeature([Ad])],
+  providers: [AdService],
 })
 
 export class AdModule {}
