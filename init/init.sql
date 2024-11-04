@@ -3,25 +3,27 @@ CREATE DATABASE if not exists `agency`;
 USE `agency`;
 
 
-CREATE TABLE users (
+CREATE TABLE user (
     id VARCHAR(64) PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role ENUM('0', '1') NOT NULL DEFAULT '1'
+    role ENUM('0', '1') NOT NULL DEFAULT '1',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE annonces (
+CREATE TABLE ad (
     id VARCHAR(64) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
+    price INT NOT NULL,
     zipcode VARCHAR(5) NOT NULL,
     city VARCHAR(255) NOT NULL,
-    type ENUM('vente', 'location') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    type ENUM('VENTE', 'LOCATION') NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
 
-CREATE TABLE annonces_metadata (
+CREATE TABLE ad_metadata (
     id VARCHAR(64) PRIMARY KEY,
     annonce_id VARCHAR(64) NOT NULL,
     build_year INT NOT NULL,
@@ -39,7 +41,7 @@ CREATE TABLE annonces_metadata (
 );
 
 
-CREATE TABLE annonces_images (
+CREATE TABLE ad_image (
     id VARCHAR(64) PRIMARY KEY,
     annonce_id VARCHAR(64) NOT NULL,
     name VARCHAR(255) NOT NULL,
