@@ -20,31 +20,31 @@ CREATE TABLE ad (
     zipcode VARCHAR(5) NOT NULL,
     city VARCHAR(255) NOT NULL,
     type ENUM('VENTE', 'LOCATION') NOT NULL,
+    squarefoot INT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
 
 CREATE TABLE ad_metadata (
     id VARCHAR(64) PRIMARY KEY,
-    annonce_id VARCHAR(64) NOT NULL,
+    ad_id VARCHAR(64) NOT NULL,
     build_year INT NOT NULL,
     floor INT NOT NULL,
     room INT NOT NULL,
     bedroom INT NOT NULL,
     bathroom INT NOT NULL,
     parking BOOLEAN NOT NULL,
-    squarefoot INT NOT NULL,
     toilet INT NOT NULL,
     cellar BOOLEAN NOT NULL,
     energy_class ENUM('A', 'B', 'C', 'D', 'E', 'F', 'G') NOT NULL,
     gas_class ENUM('A', 'B', 'C', 'D', 'E', 'F', 'G') NOT NULL,
-    FOREIGN KEY (annonce_id) REFERENCES annonces(id)
+    FOREIGN KEY (ad_id) REFERENCES ad(id)
 );
 
 
 CREATE TABLE ad_image (
     id VARCHAR(64) PRIMARY KEY,
-    annonce_id VARCHAR(64) NOT NULL,
+    ad_id VARCHAR(64) NOT NULL,
     name VARCHAR(255) NOT NULL,
     data LONGBLOB NOT NULL,
-    FOREIGN KEY (annonce_id) REFERENCES annonces(id)
+    FOREIGN KEY (ad_id) REFERENCES ad(id)
 );
