@@ -1,4 +1,6 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, HasOne, Model, Table } from 'sequelize-typescript';
+import { AdMetadata } from '../ad_metadata/ad_metadata.entity';
+import { AdImage } from '../ad_image/ad_image.entity';
 
 enum AdType {
   SALE = 'VENTE',
@@ -66,6 +68,13 @@ export class Ad extends Model {
   type: string
 
   @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  squarefoot: number
+
+
+  @Column({
     field: 'created_at',
     type: DataType.DATE,
     defaultValue: DataType.NOW,
@@ -78,5 +87,11 @@ export class Ad extends Model {
     defaultValue: DataType.NOW,
   })
   updatedAt: Date;
+
+  @HasMany(() => AdImage)
+  images: AdImage[];
+
+  @HasOne(() => AdMetadata)
+  metadata: AdMetadata;
 }
 

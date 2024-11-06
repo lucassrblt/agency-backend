@@ -13,13 +13,13 @@ export class AdImage extends Model {
 
   @ForeignKey(() => Ad)
   @Column({
-    field: 'annonce_id',
+    field: 'ad_id',
     allowNull: false,
     validate: {
       notEmpty: true
     }
   })
-  annonceId: string;
+  adId: string;
 
   @BelongsTo(() => Ad)
   ad: Ad;
@@ -40,4 +40,18 @@ export class AdImage extends Model {
     }
   })
   data: Blob;
+
+  @Column({
+    field: 'created_at',
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
+  })
+  createdAt: Date;
+
+  @Column({
+    field: 'updated_at',
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
+  })
+  updatedAt: Date;
 }
