@@ -16,8 +16,12 @@ import { AdModule } from './modules/ad/ad.module';
       username: 'root', // Database username
       password: 'root', // Database password
       database: 'agency', // Database name
+      dialectOptions : {
+        connectTimeout : 30000
+      }
     }),
     UserModule,
+    AdModule,
     ConfigModule.forRoot(),
   ],
   controllers: [],

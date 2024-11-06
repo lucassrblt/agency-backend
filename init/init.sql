@@ -28,7 +28,7 @@ CREATE TABLE ad_metadata (
     id VARCHAR(64) PRIMARY KEY,
     ad_id VARCHAR(64) NOT NULL,
     build_year INT NOT NULL,
-    floor INT NOT NULL,
+    floor INT,
     room INT NOT NULL,
     bedroom INT NOT NULL,
     bathroom INT NOT NULL,
@@ -37,6 +37,8 @@ CREATE TABLE ad_metadata (
     cellar BOOLEAN NOT NULL,
     energy_class ENUM('A', 'B', 'C', 'D', 'E', 'F', 'G') NOT NULL,
     gas_class ENUM('A', 'B', 'C', 'D', 'E', 'F', 'G') NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP),
     FOREIGN KEY (ad_id) REFERENCES ad(id)
 );
 
@@ -46,5 +48,7 @@ CREATE TABLE ad_image (
     ad_id VARCHAR(64) NOT NULL,
     name VARCHAR(255) NOT NULL,
     data LONGBLOB NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
     FOREIGN KEY (ad_id) REFERENCES ad(id)
 );
