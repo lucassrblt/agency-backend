@@ -2,7 +2,7 @@
 deployment:
   tasks:
     # Définir le chemin de déploiement
-    - export DEPLOYPATH=/home/username
+    - export DEPLOYPATH=/home/zuwu8134/agency-backend
 
     # Installation des dépendances et build
     - /bin/cp package.json $DEPLOYPATH/
