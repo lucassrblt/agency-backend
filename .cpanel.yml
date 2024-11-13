@@ -1,0 +1,15 @@
+---
+deployment:
+  tasks:
+    # Définir le chemin de déploiement
+    - export DEPLOYPATH=/home/username
+
+    # Installation des dépendances et build
+    - /bin/cp package.json $DEPLOYPATH/
+    - /bin/cp package-lock.json $DEPLOYPATH/
+    - cd $DEPLOYPATH && /usr/local/bin/npm install
+    - cd $DEPLOYPATH && /usr/local/bin/npm run build
+
+    # Configuration Node.js
+    - /bin/cp .env.production $DEPLOYPATH/.env
+    - /bin/cp -R dist $DEPLOYPATH/
