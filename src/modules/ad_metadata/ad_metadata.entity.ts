@@ -1,17 +1,9 @@
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { Ad } from '../ad/ad.entity';
 import { ENUM } from 'sequelize';
+import { EnergyClass } from '../../interface/Ad.interface';
 
 
-enum Class {
-  A = 'A',
-  B = 'B',
-  C = 'C',
-  D = 'D',
-  E = 'E',
-  F = 'F',
-  G = 'G'
-}
 
 @Table({ tableName: "ad_metadata"})
 export class AdMetadata extends Model {
@@ -90,14 +82,14 @@ export class AdMetadata extends Model {
   @Column({
     field: 'energy_class',
     allowNull: false,
-    type: DataType.ENUM(...Object.values(Class)),
+    type: DataType.ENUM(...Object.values(EnergyClass)),
   })
   energyClass: string;
 
   @Column({
     field: 'gas_class',
     allowNull: false,
-    type: DataType.ENUM(...Object.values(Class)),
+    type: DataType.ENUM(...Object.values(EnergyClass)),
   })
   gasClass: string;
 

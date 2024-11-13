@@ -3,7 +3,7 @@ CREATE DATABASE if not exists `agency`;
 USE `agency`;
 
 
-CREATE TABLE user (
+CREATE TABLE users (
     id VARCHAR(64) PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,

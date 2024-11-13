@@ -1,46 +1,68 @@
-
-export interface AdContent {
-  id: bigint
-  type: number,
-  title: string
-  price: number
-  description: string
-  zipcode: string
-  city: string;
-  room: number;
-  bedroom: number;
-  bathroom: number;
-  parking: boolean;
-  squarefoot: number;
+export interface AdResponseI {
+  status: string;
+  data: AdContentI[];
+  code: number;
 }
 
+export interface AdRequestI {
+  content: AdContentI,
+  images: AdImageI[],
+  metadata: AdMetadataI,
+}
 
-export interface AdRequest {
-  id: number,
+enum AdType {
+  VENTE = 'VENTE',
+  LOCATION = 'LOCATION',
+}
+
+export interface AdContentI {
+  id?: string,
   title: string,
+  description: string,
+  price: number,
+  zipcode: string,
+  city: string,
+  type : AdType,
+  squarefoot: number,
+  createdAt: Date,
+  updatedAt: Date,
+  images?: AdImageI[],
+  metadata?: AdMetadataI,
 }
 
-export interface AdImages {
-  id: bigint;
-  adId: bigint;
-  url: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface AdTechnicalSheet {
-  id: bigint
-  adId: bigint
-  floot: number,
-  last_floor: boolean,
-  exposition: string,
-  bus: number,
-  subway: number,
+export interface AdImageI {
+  id?: string,
+  adId: string,
+  name: string,
+  data: Blob,
+  createdAt: Date,
+  updatedAt: Date,
 }
 
 
-export interface AdDto {
-  ad : AdContent,
-  technicalSheet: AdTechnicalSheet,
-  images: AdImages[]
+export interface AdMetadataI {
+  id?: string,
+  adId: string,
+  buildYear: number,
+  floor: number,
+  room: number,
+  bedroom: number,
+  bathroom: number,
+  parking: boolean,
+  toilet: number,
+  cellar: boolean,
+  energyClass: string,
+  gasClass: string,
+  createdAt: EnergyClass,
+  updatedAt: EnergyClass,
+}
+
+export enum EnergyClass {
+  A = 'A',
+  B = 'B',
+  C = 'C',
+  D = 'D',
+  E = 'E',
+  F = 'F',
+  G = 'G'
 }

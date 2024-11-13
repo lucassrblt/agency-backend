@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './user.entity';
 import { UserRequest } from '../../interface/user.interface';
@@ -12,18 +12,15 @@ export class UserService {
 
   async getAll(): Promise<any> {
     const response = await this.userModel.findAll();
-    console.log('response', response);
     return 'nothing';
   }
 
   async create(user: UserRequest): Promise<User> {
     try {
       if (!user.password || user.password.trim() === '') {
-        throw new Error('Password is required');
       }
       const mailUsed = await this.findOne(user.email);
       if (mailUsed) {
-        throw new Error('Mail is already taken');
       }
       const userId = uuidv4();
       const hashedPassword = await hash(user.password, 10);
@@ -37,18 +34,18 @@ export class UserService {
   async login(user: UserRequest): Promise<any> {
     try {
       if (!user.password || user.password.trim() === '') {
-        throw new Error('Password is required');
+        throw new HttpException('Un mot de passe est requis', HttpStatus.BAD_REQUEST);
       }
 
       if (!user.email || user.email.trim() === '') {
-        throw new Error('Email is required');
+        throw new HttpException('Un email est requis', HttpStatus.BAD_REQUEST);
       }
 
       console.log('email', user.email);
       const userFound = (await this.findOne(user.email)) as User;
       console.log('userFound', userFound);
       if (!userFound) {
-        throw new Error('User not found');
+        throw new HttpException("L'utilisateur n'existe pas", HttpStatus.NOT_FOUND);
       }
 
       const isPasswordMatch = await compare(
@@ -56,7 +53,7 @@ export class UserService {
         userFound.dataValues.password,
       );
 
-      if (!isPasswordMatch) throw new Error('Credentials are incorrects');
+      if (!isPasswordMatch) throw new HttpException('Le mot de passe ne correspond pas', HttpStatus.BAD_REQUEST);
       // Créer token + renvoyer un cookie avec le token
 
       const token = sign(
@@ -74,7 +71,7 @@ export class UserService {
         token,
       }
     } catch (e) {
-      throw new Error(e);
+      throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
