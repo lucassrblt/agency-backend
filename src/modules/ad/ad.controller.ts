@@ -8,6 +8,11 @@ export class AdController {
   constructor(private readonly adService: AdService) {
   }
 
+  @Get('/hello')
+  getHello(): string {
+    return 'Hello World!';
+  }
+
 
   @Get()
   async getAll(@Query() query: { city?: string, squarefoot?: number, price?: number, type?: string }): Promise<AdResponseI> {

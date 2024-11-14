@@ -14,12 +14,12 @@ import { User } from './modules/user/user.entity';
       autoLoadModels: true, // Automatically load models
       synchronize: true, // Synchronize models with the database - Not for production
       sync: { alter: true }, // Alter tables to fit models - Not for production
-      dialect: 'mariadb', // Specify our database type
+      dialect: 'mysql', // Specify our database type
       host: 'localhost', // Database host
-      port: 3308, // Database port
-      username: 'root', // Database username
-      password: 'root', // Database password
-      database: 'agency', // Database name
+      port: 3306, // Database port
+      username: process.env.DB_USERNAME, // Database username
+      password: process.env.DB_PASSWORD, // Database password
+      database: process.env.DB_NAME, // Database name
       dialectOptions : {
         connectTimeout : 30000
       },
