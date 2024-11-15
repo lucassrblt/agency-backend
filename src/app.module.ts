@@ -8,6 +8,7 @@ import { Ad } from './modules/ad/ad.entity';
 import { AdImage } from './modules/ad_image/ad_image.entity';
 import { AdMetadata } from './modules/ad_metadata/ad_metadata.entity';
 import { User } from './modules/user/user.entity';
+import { LocationModule } from './modules/location/location.module';
 @Module({
   imports: [
     SequelizeModule.forRoot({
@@ -27,6 +28,7 @@ import { User } from './modules/user/user.entity';
     }),
     UserModule,
     AdModule,
+    LocationModule,
     ConfigModule.forRoot(),
   ],
   controllers: [],
