@@ -16,7 +16,8 @@ export class AdService {
     city?: string,
     squarefoot?: number,
     price?: number,
-    type?: string,
+    saleType?: string,
+    propertyType?: string,
   ): Promise<AdResponseI> {
     try {
       const whereClause = {};
@@ -36,9 +37,15 @@ export class AdService {
         };
       }
 
-      if (type) {
-        whereClause['type'] = type;
+      if (saleType) {
+        whereClause['type'] = saleType;
       }
+
+      if(propertyType){
+        whereClause['propertyType'] = propertyType;
+      }
+
+
       const response = await this.adModel.findAll({
         where: whereClause,
         order: [['createdAt', 'DESC']],

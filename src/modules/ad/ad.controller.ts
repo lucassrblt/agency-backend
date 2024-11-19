@@ -10,9 +10,9 @@ export class AdController {
 
 
   @Get()
-  async getAll(@Query() query: { city?: string, squarefoot?: number, price?: number, type?: string }): Promise<AdResponseI> {
-    const { city, squarefoot, price, type } = query;
-    return this.adService.getAll(city, squarefoot, price, type);
+  async getAll(@Query() query: { city?: string, squarefoot?: number, price?: number, saleType?: string, propertyType?: string }): Promise<AdResponseI> {
+    const { city, squarefoot, price, saleType, propertyType} = query;
+    return this.adService.getAll(city, squarefoot, price, saleType, propertyType);
   }
 
   @Get('/cities')

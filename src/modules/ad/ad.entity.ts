@@ -2,9 +2,14 @@ import { Column, DataType, HasMany, HasOne, Model, Table } from 'sequelize-types
 import { AdMetadata } from '../ad_metadata/ad_metadata.entity';
 import { AdImage } from '../ad_image/ad_image.entity';
 
-enum AdType {
+enum SaleType {
   SALE = 'VENTE',
   RENT = 'LOCATION',
+}
+
+enum PropertyType {
+  HOUSE = 'MAISON',
+  FLAT = 'APPARTEMENT',
 }
 
 @Table({
@@ -61,11 +66,20 @@ export class Ad extends Model {
   city: string
 
   @Column({
-    type: DataType.ENUM(...Object.values(AdType)),
+    type: DataType.ENUM(...Object.values(SaleType)),
     allowNull: false,
-    defaultValue: AdType.SALE,
+    defaultValue: SaleType.SALE,
+    field: 'sale_type',
   })
-  type: string
+  saleType: string
+
+  @Column({
+    type: DataType.ENUM(...Object.values(PropertyType)),
+    allowNull: false,
+    defaultValue: PropertyType.HOUSE,
+    field: 'property_type',
+  })
+  propertyType: string
 
   @Column({
     type: DataType.INTEGER,

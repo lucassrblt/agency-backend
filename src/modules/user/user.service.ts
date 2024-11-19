@@ -41,11 +41,9 @@ export class UserService {
         throw new HttpException('Un email est requis', HttpStatus.BAD_REQUEST);
       }
 
-      console.log('email', user.email);
       const userFound = (await this.findOne(user.email)) as User;
-      console.log('userFound', userFound);
       if (!userFound) {
-        throw new HttpException("L'utilisateur n'existe pas", HttpStatus.NOT_FOUND);
+        return new HttpException("L'utilisateur n'existe pas", HttpStatus.NOT_FOUND);
       }
 
       const isPasswordMatch = await compare(
@@ -71,7 +69,7 @@ export class UserService {
         token,
       }
     } catch (e) {
-      throw new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+console.log(e)
     }
   }
 
